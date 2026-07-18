@@ -650,38 +650,39 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ===== VISITOR COUNTER (ANIMASI & +1 SETIAP 7 MENIT) =====
-        const targetCount = 78932947;
-        let currentCount = 0;
-        const counterEl = document.getElementById('visitorCounter');
-        
-        function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
+        // ===== VISITOR COUNTER =====
+const baseCount = 78932947;
+const counterEl = document.getElementById("visitorCounter");
 
-        function startCounterAnimation() {
-            const duration = 3000; 
-            const stepTime = 20;
-            const steps = duration / stepTime;
-            const increment = Math.ceil(targetCount / steps);
-            
-            const animInterval = setInterval(() => {
-                currentCount += increment;
-                if (currentCount >= targetCount) {
-                    currentCount = targetCount;
-                    counterEl.innerText = formatNumber(currentCount);
-                    clearInterval(animInterval);
-                    setInterval(increaseCounter, 420000); // 7 menit
-                } else {
-                    counterEl.innerText = formatNumber(currentCount);
-                }
-            }, stepTime);
-        }
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 
-        function increaseCounter() {
-            currentCount++;
-            counterEl.innerText = formatNumber(currentCount);
-        }
+let currentCount = parseInt(localStorage.getItem("visitorCount"));
+
+if (isNaN(currentCount)) {
+    currentCount = baseCount;
+}
+
+// Tambah acak 1-5 setiap website dibuka
+currentCount += Math.floor(Math.random() * 5) + 1;
+
+// Tampilkan angka
+counterEl.innerText = formatNumber(currentCount);
+
+// Simpan
+localStorage.setItem("visitorCount", currentCount);
+
+// Naik 1 setiap 3 menit
+setInterval(() => {
+    currentCount++;
+    counterEl.innerText = formatNumber(currentCount);
+    localStorage.setItem("visitorCount", currentCount);
+}, 180000);
+
+function startCounterAnimation() {
+    // Tidak perlu animasi lagi
+}
 
         // ===== POPUP =====
         const popupBtn = document.getElementById('popupBtn');
