@@ -612,12 +612,20 @@
             loaderText.innerText = Math.floor(progress) + '%';
 
             if (progress >= 100) {
-                clearInterval(loadInterval);
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                    mainContent.classList.add('loaded');
-                    startCounterAnimation();
-                }, 500);
+    clearInterval(loadInterval);
+    setTimeout(() => {
+        loader.classList.add('hidden');
+        mainContent.classList.add('loaded');
+        startCounterAnimation();
+
+        const bgMusic = document.getElementById("bgMusic");
+
+        bgMusic.play().catch(() => {
+            document.body.addEventListener("click", () => {
+                bgMusic.play();
+            }, { once: true });
+        });
+    }, 500);
             }
         }, 150);
 
