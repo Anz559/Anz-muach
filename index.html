@@ -831,21 +831,18 @@
   }, 10000);
 </script>
 
-<audio id="bgMusic" loop preload="auto">
-  <source src="https://raw.githubusercontent.com/Anz559/Anz-media/main/backtouyou_042300888.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+    <source src="https://raw.githubusercontent.com/Anz559/Anz-media/main/Back%20To%20you.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const music = document.getElementById("bgMusic");
+const bgMusic = document.getElementById("bgMusic");
 
-function playMusic() {
-  music.play().catch(() => {});
-  document.removeEventListener("click", playMusic);
-  document.removeEventListener("touchstart", playMusic);
-}
-
-document.addEventListener("click", playMusic);
-document.addEventListener("touchstart", playMusic);
+window.addEventListener("load", () => {
+    document.body.addEventListener("click", () => {
+        bgMusic.play();
+    }, { once: true });
+});
 </script>
 </body>
 </html>
