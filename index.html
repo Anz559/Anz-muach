@@ -1,1366 +1,1726 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anz v•Hardcore!</title>
-<style>
-/* ============ VARIABLES ============ */
-:root {
-  --neon: #00e5ff;
-  --neon-bright: #7df9ff;
-  --neon-deep: #0099ff;
-  --neon-glow: rgba(0, 229, 255, 0.55);
-  --glass: rgba(6, 16, 30, 0.42);
-  --glass-strong: rgba(8, 22, 40, 0.65);
-  --border-neon: rgba(0, 229, 255, 0.32);
-  --text: #eaf6ff;
-  --text-dim: #9ec5db;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anz — Sundanese Pride!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+        :root {
+            --bg-dark: rgba(0,0,0,0.55);
+            --glass-bg: rgba(10,10,10,0.65);
+            --glass-border: rgba(255,255,255,0.08);
+            --glass-border-hover: rgba(52,211,153,0.3);
+            --accent: #34d399;
+            --accent-dim: rgba(52,211,153,0.15);
+            --cyan: #22d3ee;
+            --gold: #fbbf24;
+            --text: #f0f0f0;
+            --text-muted: rgba(255,255,255,0.55);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-lg: 28px;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+        }
 
-body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-  background: #000 url('https://raw.githubusercontent.com/Anz559/Anz-media/main/4f7a5024f37686ad6f98bcb7f3b860c7.jpg') center/cover fixed no-repeat;
-  cursor: none;
-  line-height: 1.6;
-}
+        html { scroll-behavior: smooth; }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,10,25,0.35) 0%, rgba(0,8,20,0.55) 100%);
-  z-index: 0;
-  pointer-events: none;
-}
+        body {
+            font-family: var(--font-body);
+            color: var(--text);
+            overflow-x: hidden;
+            background: #000;
+        }
 
-/* ============ SCROLLBAR ============ */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: rgba(0,10,25,0.5); }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--neon), var(--neon-deep));
-  border-radius: 4px;
-  box-shadow: 0 0 10px var(--neon-glow);
-}
-::-webkit-scrollbar-thumb:hover { background: var(--neon); }
+        /* ===== CUSTOM SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
 
-/* ============ LOADER ============ */
-#loader {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, #001a2e 0%, #000 100%);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-#loader.hidden { opacity: 0; visibility: hidden; }
+        /* ===== FIXED BACKGROUND ===== */
+        .main-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: url('https://raw.githubusercontent.com/Anz559/Anz-media-web-baru/main/49b8cf2fd65bff1f2b768086739bfa3c.jpg') center/cover no-repeat;
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: -1;
+        }
 
-.loader-ring {
-  width: 70px;
-  height: 70px;
-  border: 3px solid rgba(0,229,255,0.12);
-  border-top-color: var(--neon);
-  border-right-color: var(--neon);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-  box-shadow: 0 0 30px var(--neon-glow), inset 0 0 20px rgba(0,229,255,0.2);
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+        /* ===== LOADING SCREEN ===== */
+        #loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: url('https://raw.githubusercontent.com/Anz559/Anz-media-web-baru/main/49b8cf2fd65bff1f2b768086739bfa3c.jpg') center/cover no-repeat;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #loader::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-content { position: relative; z-index: 1; text-align: center; }
+        .loader-logo {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 40px rgba(52,211,153,0.4), 0 0 80px rgba(52,211,153,0.15);
+            letter-spacing: 0.05em;
+            animation: loaderPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes loaderPulse {
+            0%, 100% { text-shadow: 0 0 40px rgba(52,211,153,0.4), 0 0 80px rgba(52,211,153,0.15); }
+            50% { text-shadow: 0 0 60px rgba(52,211,153,0.6), 0 0 120px rgba(52,211,153,0.25); }
+        }
+        .loader-sub {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .loader-bar-wrap {
+            margin-top: 32px;
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .loader-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--cyan));
+            border-radius: 2px;
+            animation: loaderFill 1.8s ease-in-out forwards;
+        }
+        @keyframes loaderFill { to { width: 100%; } }
 
-.loader-text {
-  margin-top: 22px;
-  font-size: 13px;
-  letter-spacing: 5px;
-  color: var(--neon);
-  text-transform: uppercase;
-  text-shadow: 0 0 10px var(--neon-glow);
-  animation: pulse 1.4s ease-in-out infinite;
-  font-weight: 600;
-}
-.loader-sub {
-  margin-top: 8px;
-  font-size: 11px;
-  color: var(--text-dim);
-  letter-spacing: 2px;
-}
-@keyframes pulse { 50% { opacity: 0.4; } }
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 16px; left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 1100px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 28px;
+            background: rgba(10,10,10,0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 60px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .navbar.scrolled {
+            background: rgba(5,5,5,0.8);
+            border-color: rgba(52,211,153,0.15);
+        }
+        .nav-brand {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .nav-brand-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .nav-brand-tag {
+            font-size: 0.65rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 600;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
+        }
+        .nav-links a:hover {
+            color: #fff;
+            background: var(--accent-dim);
+        }
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 8px;
+        }
 
-/* ============ CURSOR ============ */
-.cursor-glow {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--neon) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: screen;
-  transition: width 0.2s, height 0.2s;
-}
-.cursor-ring {
-  position: fixed;
-  width: 38px;
-  height: 38px;
-  border: 1.5px solid var(--neon);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9997;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 15px var(--neon-glow);
-  transition: width 0.25s, height 0.25s, border-color 0.25s;
-}
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 999;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+        .mobile-menu.open { opacity: 1; visibility: visible; display: flex; }
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 14px 40px;
+            border-radius: 16px;
+            transition: all 0.3s;
+            letter-spacing: 0.03em;
+        }
+        .mobile-menu a:hover { background: var(--accent-dim); color: var(--accent); }
+        .mobile-close {
+            position: absolute;
+            top: 24px; right: 28px;
+            background: none; border: none;
+            color: #fff; font-size: 1.6rem;
+            cursor: pointer;
+        }
 
-/* ============ CANVAS LAYERS ============ */
-#weatherCanvas, #particlesCanvas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-}
-#particlesCanvas { z-index: 1; }
-#weatherCanvas { z-index: 2; }
+        /* ===== CONTENT WRAPPER ===== */
+        .content {
+            position: relative;
+            z-index: 1;
+        }
 
-/* ============ CONTAINER ============ */
-.container {
-  position: relative;
-  z-index: 3;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 20px 120px;
-}
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(52,211,153,0.2);
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.3s ease forwards;
+        }
+        .hero-badge i { font-size: 0.6rem; }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+            letter-spacing: 0.02em;
+            text-shadow: 0 4px 60px rgba(0,0,0,0.5);
+            opacity: 0;
+            animation: fadeUp 0.9s 0.5s ease forwards;
+        }
+        .hero-sub {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 8px;
+            letter-spacing: 0.08em;
+            opacity: 0;
+            animation: fadeUp 0.9s 0.65s ease forwards;
+        }
+        .hero-jp {
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
+            color: var(--text-muted);
+            margin-top: 12px;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeUp 0.9s 0.8s ease forwards;
+        }
+        .hero-desc {
+            max-width: 520px;
+            margin-top: 24px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeUp 0.9s 0.95s ease forwards;
+        }
+        .hero-deco {
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-/* ============ TOP SECTION ============ */
-.top-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 36px;
-  flex-wrap: wrap;
-}
+        /* ===== PARTICLES ===== */
+        .particles-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat linear infinite;
+        }
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.3; }
+            100% { opacity: 0; transform: translateY(-200px) scale(0); }
+        }
 
-/* ============ PROFILE CARD ============ */
-.profile-card {
-  background: var(--glass);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid var(--border-neon);
-  border-radius: 18px;
-  padding: 18px;
-  width: fit-content;
-  box-shadow: 0 0 30px rgba(0,229,255,0.18), inset 0 0 20px rgba(0,229,255,0.04);
-  position: relative;
-  animation: neonBlink 4s ease-in-out infinite;
-}
-@keyframes neonBlink {
-  0%, 100% { box-shadow: 0 0 30px rgba(0,229,255,0.18), inset 0 0 20px rgba(0,229,255,0.04); }
-  50% { box-shadow: 0 0 45px rgba(0,229,255,0.4), inset 0 0 25px rgba(0,229,255,0.08); }
-}
+        /* ===== SECTION COMMON ===== */
+        .section {
+            padding: 80px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
 
-.profile-photo {
-  width: 130px;
-  height: 130px;
-  border-radius: 14px;
-  object-fit: cover;
-  border: 2px solid var(--neon);
-  box-shadow: 0 0 25px var(--neon-glow), inset 0 0 15px rgba(0,229,255,0.1);
-  display: block;
-  margin-bottom: 14px;
-  transition: transform 0.4s ease;
-}
-.profile-photo:hover { transform: scale(1.04) rotate(-1deg); }
+        /* ===== PRODUCT CARDS ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .product-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .product-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(135deg, transparent 40%, var(--accent) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .product-card:hover::before { opacity: 1; }
+        .product-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 48px rgba(52,211,153,0.1), 0 0 0 1px rgba(52,211,153,0.15);
+            border-color: transparent;
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .product-card:hover img { transform: scale(1.03); }
+        .product-card .card-body {
+            padding: 24px;
+        }
+        .product-card .card-sub {
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .product-card .card-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .product-card .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(52,211,153,0.2);
+            border-radius: 40px;
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-family: var(--font-body);
+        }
+        .card-btn:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 4px 20px rgba(52,211,153,0.3);
+        }
 
-.profile-name {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--neon-bright);
-  text-shadow: 0 0 12px var(--neon-glow), 0 0 24px rgba(0,229,255,0.3);
-  margin-bottom: 6px;
-  letter-spacing: 1px;
-}
+        /* ===== OTHER PRODUCTS PANEL ===== */
+        .other-products {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .other-products::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            right: -1px; bottom: -1px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, var(--accent), var(--cyan), var(--gold), var(--accent));
+            background-size: 300% 300%;
+            animation: gradientBorder 6s ease infinite;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .other-products::after {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            background: rgba(10,10,10,0.95);
+            border-radius: calc(var(--radius-lg) - 1px);
+            z-index: -1;
+        }
+        .other-products h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .op-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            transition: all 0.3s;
+            cursor: default;
+            position: relative;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        .op-item.visible { opacity: 1; transform: translateX(0); transition: all 0.5s ease; }
+        .op-item:hover { background: var(--accent-dim); }
+        .op-icon {
+            width: 40px; height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .op-text {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text);
+        }
 
-.profile-clock {
-  font-size: 12.5px;
-  color: var(--text-dim);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.3px;
-  line-height: 1.5;
-}
-.profile-clock .time {
-  color: var(--neon-bright);
-  font-weight: 600;
-  text-shadow: 0 0 8px var(--neon-glow);
-}
+        /* ===== QUOTES SECTION ===== */
+        .quote-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            font-weight: 400;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.8;
+            font-style: italic;
+            transition: opacity 0.5s ease;
+        }
+        .quote-text .quote-mark { color: var(--accent); font-size: 1.4em; }
 
-/* ============ CLICK CARD (Music Trigger) ============ */
-.click-card {
-  background: var(--glass);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid var(--border-neon);
-  border-radius: 16px;
-  padding: 30px 36px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(0,229,255,0.18);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-width: 220px;
-  text-align: center;
-  animation: neonBlink 4s ease-in-out infinite;
-  animation-delay: 2s;
-}
-.click-card:hover {
-  box-shadow: 0 0 50px rgba(0,229,255,0.5);
-  transform: translateY(-3px);
-}
-.click-card-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--neon-bright);
-  text-shadow: 0 0 10px var(--neon-glow);
-  letter-spacing: 0.5px;
-}
-.click-card-sub {
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-top: 6px;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.click-card-sub .music-indicator {
-  width: 8px;
-  height: 8px;
-  background: #ff3370;
-  border-radius: 50%;
-  display: inline-block;
-  animation: hintBlink 1.5s infinite;
-  box-shadow: 0 0 8px rgba(255,51,112,0.6);
-}
-.click-card-sub.playing .music-indicator {
-  background: var(--neon);
-  box-shadow: 0 0 8px var(--neon-glow);
-  animation: none;
-}
+        /* ===== WHY ANZ ===== */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .why-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 28px 22px;
+            text-align: center;
+            transition: all 0.35s;
+        }
+        .why-card:hover {
+            border-color: var(--glass-border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(52,211,153,0.08);
+        }
+        .why-num {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            opacity: 0.5;
+            margin-bottom: 8px;
+        }
+        .why-icon {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+        .why-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .why-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
 
-/* ============ POPUP ============ */
-.popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 5, 15, 0.78);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 9000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-  padding: 20px;
-}
-.popup-overlay.active { opacity: 1; visibility: visible; }
+        /* ===== STATS ===== */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-num {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .stat-num .stat-suffix { color: var(--accent); }
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-top: 4px;
+            font-weight: 500;
+        }
 
-.popup {
-  background: linear-gradient(135deg, rgba(8,20,35,0.96), rgba(0,40,70,0.96));
-  border: 1px solid var(--neon);
-  border-radius: 20px;
-  padding: 36px 32px;
-  max-width: 480px;
-  width: 100%;
-  box-shadow: 0 0 50px var(--neon-glow), inset 0 0 30px rgba(0,229,255,0.05);
-  transform: scale(0.85) translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-}
-.popup-overlay.active .popup { transform: scale(1) translateY(0); }
+        /* ===== FAQ ===== */
+        .faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 750px; }
+        .faq-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .faq-item.active { border-color: rgba(52,211,153,0.2); }
+        .faq-q {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: #fff;
+            gap: 16px;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        .faq-q:hover { color: var(--accent); }
+        .faq-q i {
+            font-size: 0.75rem;
+            color: var(--accent);
+            transition: transform 0.35s ease;
+            flex-shrink: 0;
+        }
+        .faq-item.active .faq-q i { transform: rotate(180deg); }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 24px;
+        }
+        .faq-item.active .faq-a {
+            max-height: 300px;
+            padding: 0 24px 20px;
+        }
+        .faq-a p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
 
-.popup-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 32px;
-  height: 32px;
-  background: rgba(0,229,255,0.1);
-  border: 1px solid var(--neon);
-  border-radius: 50%;
-  color: var(--neon);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  transition: all 0.3s;
-}
-.popup-close:hover { background: var(--neon); color: #000; transform: rotate(90deg); }
+        /* ===== CTA ===== */
+        .cta-section {
+            text-align: center;
+            padding: 80px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .cta-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+        .cta-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+        .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            font-size: 0.88rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-family: var(--font-body);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 28px rgba(52,211,153,0.35);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: transparent;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.88rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-family: var(--font-body);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
 
-.popup h3 {
-  color: var(--neon-bright);
-  margin-bottom: 22px;
-  text-align: center;
-  font-size: 22px;
-  text-shadow: 0 0 12px var(--neon-glow);
-  letter-spacing: 1px;
-}
-.popup p {
-  color: var(--text);
-  line-height: 1.8;
-  margin-bottom: 6px;
-  font-size: 14.5px;
-  padding-left: 16px;
-  position: relative;
-}
-.popup p::before {
-  content: '◆';
-  position: absolute;
-  left: 0;
-  color: var(--neon);
-  font-size: 8px;
-  top: 7px;
-  text-shadow: 0 0 6px var(--neon-glow);
-}
-.popup p:last-child { margin-top: 14px; padding-left: 0; text-align: center; color: var(--neon-bright); font-weight: 600; }
-.popup p:last-child::before { display: none; }
+        /* ===== FOOTER ===== */
+        .footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 48px 24px 28px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin-bottom: 36px;
+        }
+        .footer-brand-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .footer-brand-tag {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+        .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-sep {
+            width: 100%;
+            height: 1px;
+            background: var(--glass-border);
+            margin-bottom: 20px;
+        }
+        .footer-copy {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
 
-.music-popup-info {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px dashed rgba(0,229,255,0.3);
-  text-align: center;
-  font-size: 12px;
-  color: var(--text-dim);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.music-popup-info.playing { color: var(--neon-bright); }
-.music-popup-info .disc {
-  font-size: 14px;
-  display: inline-block;
-}
-.music-popup-info.playing .disc {
-  animation: spin 2s linear infinite;
-}
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-box {
+            background: rgba(12,12,12,0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(52,211,153,0.15);
+            border-radius: 25px;
+            padding: 36px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 60px rgba(52,211,153,0.08), 0 24px 48px rgba(0,0,0,0.5);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.35s ease;
+        }
+        .modal-overlay.active .modal-box { transform: scale(1) translateY(0); }
+        .modal-close {
+            position: absolute;
+            top: 16px; right: 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .modal-close:hover { background: rgba(255,255,255,0.15); border-color: var(--accent); color: var(--accent); }
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            padding-right: 40px;
+        }
+        .modal-body { color: var(--text-muted); font-size: 0.88rem; line-height: 1.8; }
+        .modal-body .script-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            font-family: 'Plus Jakarta Sans', monospace;
+            font-size: 0.82rem;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 24px;
+        }
+        .modal-body .flm-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0 24px;
+        }
+        .modal-body .flm-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.75);
+            font-size: 0.85rem;
+        }
+        .modal-body .flm-list li:last-child { border: none; }
+        .modal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-family: var(--font-body);
+        }
+        .modal-btn:hover {
+            box-shadow: 0 6px 28px rgba(52,211,153,0.35);
+            transform: translateY(-2px);
+        }
 
-/* ============ CARDS ============ */
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid var(--border-neon);
-  border-radius: 16px;
-  padding: 26px 28px;
-  margin-bottom: 18px;
-  position: relative;
-  box-shadow: 0 0 30px rgba(0,229,255,0.12), inset 0 0 20px rgba(0,229,255,0.03);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  transform-style: preserve-3d;
-  overflow: hidden;
-  will-change: transform;
-}
-.card::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0,229,255,0.08), transparent);
-  transition: left 0.7s ease;
-  pointer-events: none;
-}
-.card:hover::after { left: 100%; }
-.card:hover {
-  box-shadow: 0 0 50px rgba(0,229,255,0.35), inset 0 0 25px rgba(0,229,255,0.05);
-}
+        /* ===== FLOATING BUTTONS ===== */
+        .fab-container {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        .fab {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: rgba(10,10,10,0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            text-decoration: none;
+        }
+        .fab:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.08); }
+        .fab-wa { background: rgba(37,211,102,0.15); border-color: rgba(37,211,102,0.3); }
+        .fab-wa:hover { background: rgba(37,211,102,0.25); color: #25d366; border-color: #25d366; }
+        .fab-music.playing { border-color: var(--accent); color: var(--accent); }
+        .fab-music.playing .music-icon { animation: musicPulse 1s ease infinite; }
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
 
-.card-title {
-  font-size: 19px;
-  font-weight: 800;
-  color: var(--neon-bright);
-  text-shadow: 0 0 10px var(--neon-glow);
-  margin-bottom: 14px;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-title::before {
-  content: '';
-  width: 4px;
-  height: 18px;
-  background: var(--neon);
-  border-radius: 2px;
-  box-shadow: 0 0 8px var(--neon-glow);
-}
-.card-text {
-  color: var(--text);
-  line-height: 1.75;
-  font-size: 14.5px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            z-index: 900;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: rgba(10,10,10,0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ============ GRID ============ */
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 90px;
+            right: 24px;
+            z-index: 8000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            background: rgba(10,10,10,0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 14px 20px;
+            font-size: 0.82rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastIn 0.4s ease forwards;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .toast.removing { animation: toastOut 0.3s ease forwards; }
+        .toast i { color: var(--accent); }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { to { opacity: 0; transform: translateX(40px); } }
 
-/* ============ PRODUCT LIST ============ */
-.product-list { list-style: none; padding: 0; }
-.product-list li {
-  padding: 11px 14px;
-  margin-bottom: 8px;
-  background: rgba(0,229,255,0.06);
-  border-left: 3px solid var(--neon);
-  border-radius: 8px;
-  font-size: 14px;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.product-list li::before {
-  content: '▹';
-  margin-right: 8px;
-  color: var(--neon);
-}
-.product-list li:hover {
-  background: rgba(0,229,255,0.14);
-  transform: translateX(6px);
-  box-shadow: 0 0 15px rgba(0,229,255,0.2);
-}
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-/* ============ WHATSAPP BUTTON ============ */
-.wa-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: linear-gradient(135deg, rgba(0,229,255,0.12), rgba(0,153,255,0.12));
-  border: 1px solid var(--neon);
-  color: var(--neon-bright);
-  padding: 14px 18px;
-  border-radius: 12px;
-  text-decoration: none;
-  margin-bottom: 12px;
-  text-align: center;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-  box-shadow: 0 0 20px rgba(0,229,255,0.18);
-  position: relative;
-  overflow: hidden;
-  font-size: 14.5px;
-}
-.wa-btn:hover {
-  background: linear-gradient(135deg, var(--neon), var(--neon-deep));
-  color: #001;
-  box-shadow: 0 0 35px var(--neon-glow);
-  transform: translateY(-2px);
-}
-.wa-btn-icon { font-size: 18px; }
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* ============ COUNTER ============ */
-.counter-card { text-align: center; }
-.counter-number {
-  font-size: 44px;
-  font-weight: 800;
-  color: var(--neon-bright);
-  text-shadow: 0 0 20px var(--neon-glow), 0 0 40px rgba(0,229,255,0.4);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 2px;
-  margin: 12px 0 8px;
-  transition: transform 0.3s;
-}
-.counter-number.bump { animation: bump 0.5s ease; }
-@keyframes bump {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-}
-.counter-label {
-  color: var(--text-dim);
-  font-size: 12px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
-
-/* ============ MOTIVATION ============ */
-.motivation-card { animation: blink 3s ease-in-out infinite; }
-@keyframes blink {
-  0%, 100% { box-shadow: 0 0 25px rgba(0,229,255,0.15), inset 0 0 20px rgba(0,229,255,0.03); }
-  50% { box-shadow: 0 0 50px rgba(0,229,255,0.55), inset 0 0 30px rgba(0,229,255,0.08); }
-}
-.motivation-card:nth-child(2) { animation-delay: 1.5s; }
-
-/* ============ WEATHER TOGGLE ============ */
-.weather-toggle {
-  position: fixed;
-  top: 50%;
-  right: 18px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 100;
-}
-.weather-btn {
-  width: 50px;
-  height: 50px;
-  background: var(--glass-strong);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border-neon);
-  border-radius: 50%;
-  color: var(--neon-bright);
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px rgba(0,229,255,0.25);
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.weather-btn:hover {
-  background: var(--neon);
-  color: #000;
-  transform: scale(1.1);
-  box-shadow: 0 0 30px var(--neon-glow);
-}
-.weather-btn.active {
-  background: var(--neon);
-  color: #000;
-  box-shadow: 0 0 30px var(--neon-glow);
-}
-
-/* ============ FLOATING DOCK ============ */
-.dock {
-  position: fixed;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  padding: 10px 14px;
-  background: rgba(8, 20, 35, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-neon);
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(0,229,255,0.25), inset 0 0 20px rgba(0,229,255,0.05);
-  z-index: 100;
-}
-.dock-item {
-  width: 44px;
-  height: 44px;
-  background: rgba(0,229,255,0.08);
-  border: 1px solid rgba(0,229,255,0.2);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--neon-bright);
-  font-size: 17px;
-  text-decoration: none;
-  position: relative;
-}
-.dock-item:hover {
-  background: var(--neon);
-  color: #001;
-  transform: translateY(-10px) scale(1.15);
-  box-shadow: 0 10px 25px rgba(0,229,255,0.5);
-}
-.dock-item .label {
-  position: absolute;
-  bottom: 55px;
-  left: 50%;
-  transform: translateX(-50%) translateY(8px);
-  background: rgba(0,229,255,0.15);
-  border: 1px solid var(--neon);
-  color: var(--neon-bright);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11px;
-  opacity: 0;
-  transition: all 0.3s;
-  white-space: nowrap;
-  pointer-events: none;
-}
-.dock-item:hover .label { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ============ RIPPLE ============ */
-.ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.4);
-  pointer-events: none;
-  transform: scale(0);
-  animation: rippleAnim 0.6s ease-out;
-}
-@keyframes rippleAnim {
-  to { transform: scale(4); opacity: 0; }
-}
-
-/* ============ SCROLL REVEAL ============ */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ============ SECTION TITLE ============ */
-.section-title {
-  font-size: 26px;
-  font-weight: 800;
-  color: var(--neon-bright);
-  text-shadow: 0 0 15px var(--neon-glow);
-  margin: 36px 0 18px;
-  text-align: center;
-  letter-spacing: 2px;
-}
-.section-title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--neon), transparent);
-  margin: 10px auto 0;
-  box-shadow: 0 0 8px var(--neon-glow);
-}
-
-/* ============ QUOTE ============ */
-.quote-card {
-  font-style: italic;
-  text-align: center;
-  font-size: 15px;
-  line-height: 1.85;
-}
-.quote-card .quote-intro {
-  color: var(--text-dim);
-  margin-bottom: 12px;
-  font-style: normal;
-  font-size: 13px;
-  letter-spacing: 1px;
-}
-.quote-card .quote-text {
-  color: var(--neon-bright);
-  text-shadow: 0 0 8px var(--neon-glow);
-}
-
-/* ============ FOOTER ============ */
-.footer {
-  text-align: center;
-  padding: 30px 20px 100px;
-  color: var(--text-dim);
-  font-size: 13px;
-  position: relative;
-  z-index: 3;
-}
-.footer .neon-line {
-  width: 70%;
-  max-width: 400px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--neon), transparent);
-  margin: 0 auto 22px;
-  box-shadow: 0 0 10px var(--neon-glow);
-}
-.footer-text {
-  text-shadow: 0 0 10px var(--neon-glow);
-  color: var(--neon-bright);
-  margin-bottom: 6px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 15px;
-}
-
-/* ============ FLOATING ICONS ============ */
-.floating-icon {
-  position: fixed;
-  pointer-events: none;
-  color: var(--neon);
-  text-shadow: 0 0 8px var(--neon-glow);
-  animation: floatUp linear infinite;
-  z-index: 1;
-  opacity: 0;
-  font-weight: bold;
-}
-@keyframes floatUp {
-  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.5; }
-  90% { opacity: 0.5; }
-  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-}
-
-/* Spin keyframe reused */
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-/* ============ RESPONSIVE ============ */
-@media (max-width: 768px) {
-  .grid-2 { grid-template-columns: 1fr; }
-  .top-section { flex-direction: column; align-items: stretch; }
-  .click-card { min-width: auto; }
-}
-
-@media (max-width: 600px) {
-  body { cursor: auto; }
-  .cursor-glow, .cursor-ring { display: none; }
-  .container { padding: 16px 14px 110px; }
-  .profile-photo { width: 100px; height: 100px; }
-  .profile-name { font-size: 19px; }
-  .profile-clock { font-size: 11.5px; }
-  .counter-number { font-size: 34px; }
-  .section-title { font-size: 22px; }
-  .card { padding: 20px 18px; }
-  .card-title { font-size: 17px; }
-  .dock { gap: 6px; padding: 8px 10px; }
-  .dock-item { width: 38px; height: 38px; font-size: 15px; }
-  .weather-toggle { right: 10px; gap: 10px; }
-  .weather-btn { width: 42px; height: 42px; font-size: 17px; }
-  .popup { padding: 28px 22px; }
-  .popup h3 { font-size: 19px; }
-  .popup p { font-size: 13.5px; }
-}
-
-@media (hover: none) {
-  .card { transform: none !important; }
-}
-</style>
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .stats-row { gap: 32px; }
+        }
+        @media (max-width: 640px) {
+            .navbar { padding: 10px 18px; }
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .why-grid { grid-template-columns: 1fr; }
+            .stats-row { gap: 24px; }
+            .section { padding: 56px 16px; }
+            .hero { padding: 100px 16px 60px; }
+            .modal-box { padding: 24px; border-radius: 20px; }
+            .footer-top { flex-direction: column; align-items: flex-start; }
+            .footer-links { gap: 16px; }
+            .fab-container { bottom: 20px; right: 20px; }
+            .back-to-top { bottom: 20px; left: 20px; }
+            .cta-btns { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-outline { width: 100%; max-width: 280px; justify-content: center; }
+        }
+    </style>
 </head>
 <body>
 
 <!-- ===== LOADING SCREEN ===== -->
 <div id="loader">
-  <div class="loader-ring"></div>
-  <div class="loader-text">Anz v•Hardcore</div>
-  <div class="loader-sub">LOADING PREMIUM EXPERIENCE</div>
+    <div class="loader-content">
+        <div class="loader-logo">Anz</div>
+        <div class="loader-sub">Loading experience...</div>
+        <div class="loader-bar-wrap">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
 </div>
 
-<!-- ===== CURSOR ===== -->
-<div class="cursor-glow"></div>
-<div class="cursor-ring"></div>
+<!-- ===== FIXED BACKGROUND ===== -->
+<div class="main-bg"></div>
+<div class="bg-overlay"></div>
 
-<!-- ===== CANVAS ===== -->
-<canvas id="particlesCanvas"></canvas>
-<canvas id="weatherCanvas"></canvas>
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+    <a href="#" class="nav-brand" onclick="event.preventDefault()">
+        <span class="nav-brand-name">Anz</span>
+        <span class="nav-brand-tag">Sundanese Pride!</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="#produk" onclick="scrollToSection(event, 'produk')">Produk</a></li>
+        <li><a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener">Contact</a></li>
+        <li><a href="https://chat.whatsapp.com/L56tRscoyLy0P82BYiBv6B?s=cl&p=a&mlu=4" target="_blank" rel="noopener">Group</a></li>
+        <li><a href="https://whatsapp.com/channel/0029VbCXIQcChq6HvVPEaz0e" target="_blank" rel="noopener">Saluran</a></li>
+        <li><a href="https://youtube.com/@anzremixer?si=OdUt9VncAg6rFFVW" target="_blank" rel="noopener">Youtube</a></li>
+    </ul>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><i class="fas fa-bars"></i></button>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="Close menu"><i class="fas fa-times"></i></button>
+    <a href="#produk" onclick="closeMobile(); scrollToSection(event, 'produk')">Produk</a>
+    <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener" onclick="closeMobile()">Contact</a>
+    <a href="https://chat.whatsapp.com/L56tRscoyLy0P82BYiBv6B?s=cl&p=a&mlu=4" target="_blank" rel="noopener" onclick="closeMobile()">Group</a>
+    <a href="https://whatsapp.com/channel/0029VbCXIQcChq6HvVPEaz0e" target="_blank" rel="noopener" onclick="closeMobile()">Saluran</a>
+    <a href="https://youtube.com/@anzremixer?si=OdUt9VncAg6rFFVW" target="_blank" rel="noopener" onclick="closeMobile()">Youtube</a>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="content">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-deco"></div>
+        <div class="particles-container" id="particles"></div>
+        <div class="hero-badge"><i class="fas fa-gem"></i> ANZ DIGITAL</div>
+        <h1 class="hero-title">Anz</h1>
+        <p class="hero-sub">Sundanese Pride!</p>
+        <p class="hero-jp">スンダ人の誇り</p>
+        <p class="hero-desc">Welcome to the official Anz server.<br>We hope you enjoy Anz products.</p>
+    </section>
+
+  <!-- PRODUCTS -->
+    <section class="section" id="produk">
+        <div class="reveal">
+            <p class="section-label">Our Products</p>
+            <h2 class="section-title">Produk Anz</h2>
+            <p class="section-desc">Temukan berbagai produk digital premium dari Anz, mulai dari script bot hingga project remix.</p>
+        </div>
+        <div class="products-grid">
+            <!-- Card 1: Script -->
+            <div class="product-card reveal" onclick="openModal('modal-script')" role="button" tabindex="0" aria-label="Lihat detail Script">
+                <img src="https://raw.githubusercontent.com/Anz559/Anz-media-web-baru/main/IMG_20260823_151352_731.jpg" alt="Script AI MD Bot WhatsApp" loading="lazy">
+                <div class="card-body">
+                    <p class="card-sub">AI MD Bot WhatsApp</p>
+                    <h3 class="card-title">Script</h3>
+                    <p class="card-desc">Bot WhatsApp dengan 1579+ fitur siap pakai, termasuk AI, downloader, stiker maker, dan banyak lagi.</p>
+                    <span class="card-btn">Lihat Detail <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <!-- Card 2: Sewa Bot -->
+            <div class="product-card reveal" onclick="openModal('modal-sewa')" role="button" tabindex="0" aria-label="Lihat detail Sewa Bot WhatsApp">
+                <img src="https://raw.githubusercontent.com/Anz559/Anz-media-web-baru/main/IMG_20260823_151352_731.jpg" alt="Sewa Bot WhatsApp" loading="lazy">
+                <div class="card-body">
+                    <p class="card-sub">Premium WhatsApp Bot</p>
+                    <h3 class="card-title">Sewa Bot WhatsApp</h3>
+                    <p class="card-desc">Nikmati layanan bot WhatsApp premium dengan fitur lengkap tanpa perlu setup sendiri.</p>
+                    <span class="card-btn">Lihat Detail <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <!-- Card 3: FLM Remix -->
+            <div class="product-card reveal" onclick="openModal('modal-flm')" role="button" tabindex="0" aria-label="Lihat detail FLM Remix">
+                <img src="https://raw.githubusercontent.com/Anz559/Anz-media-web-baru/main/IMG_20260823_151352_731.jpg" alt="FLM Remix" loading="lazy">
+                <div class="card-body">
+                    <p class="card-sub">Premium Remix Project</p>
+                    <h3 class="card-title">FLM Remix</h3>
+                    <p class="card-desc">Koleksi project file remix berkualitas tinggi dengan berbagai varian style.</p>
+                    <span class="card-btn">Lihat Detail <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <!-- Other Products Panel -->
+            <div class="other-products reveal">
+                <h3>Produk lainnya :</h3>
+                <div class="op-item" data-delay="0">
+                    <div class="op-icon"><i class="fas fa-bug"></i></div>
+                    <span class="op-text">Jasa Bug WA</span>
+                </div>
+                <div class="op-item" data-delay="100">
+                    <div class="op-icon"><i class="fas fa-server"></i></div>
+                    <span class="op-text">Panel Pterodactyl</span>
+                </div>
+                <div class="op-item" data-delay="200">
+                    <div class="op-icon"><i class="fas fa-sim-card"></i></div>
+                    <span class="op-text">Nomor Virtual</span>
+                </div>
+                <div class="op-item" data-delay="300">
+                    <div class="op-icon"><i class="fas fa-reply-all"></i></div>
+                    <span class="op-text">Script Responder</span>
+                </div>
+                <div class="op-item" data-delay="400">
+                    <div class="op-icon"><i class="fas fa-code"></i></div>
+                    <span class="op-text">HTML Website</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUOTES -->
+    <section class="section">
+        <div class="reveal">
+            <p class="section-label">Life Notes</p>
+            <h2 class="section-title">Kata² Random Kehidupan</h2>
+        </div>
+        <div class="quote-card reveal">
+            <p class="quote-text" id="quoteText"></p>
+        </div>
+    </section>
+
+    <!-- WHY ANZ -->
+    <section class="section">
+        <div class="reveal">
+            <p class="section-label">Our Advantage</p>
+            <h2 class="section-title">Why Choose Anz?</h2>
+        </div>
+        <div class="why-grid">
+            <div class="why-card reveal">
+                <div class="why-num">01</div>
+                <div class="why-icon"><i class="fas fa-crown"></i></div>
+                <h4 class="why-title">Premium</h4>
+                <p class="why-desc">Produk dibuat dengan konsep modern dan profesional.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-num">02</div>
+                <div class="why-icon"><i class="fas fa-rotate"></i></div>
+                <h4 class="why-title">Updated</h4>
+                <p class="why-desc">Selalu dikembangkan dan diperbarui.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-num">03</div>
+                <div class="why-icon"><i class="fas fa-tags"></i></div>
+                <h4 class="why-title">Affordable</h4>
+                <p class="why-desc">Harga dibuat terjangkau.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-num">04</div>
+                <div class="why-icon"><i class="fas fa-headset"></i></div>
+                <h4 class="why-title">Support</h4>
+                <p class="why-desc">Bisa langsung menghubungi Anz melalui WhatsApp.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATISTICS -->
+    <section class="section">
+        <div class="stats-row reveal">
+            <div class="stat-item">
+                <div class="stat-num"><span class="counter" data-target="1579">0</span><span class="stat-suffix">+</span></div>
+                <div class="stat-label">Features</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">24<span class="stat-suffix">/7</span></div>
+                <div class="stat-label">Bot Online</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">2024–2026</div>
+                <div class="stat-label">Journey</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num"><span class="counter" data-target="100">0</span><span class="stat-suffix">%</span></div>
+                <div class="stat-label">Digital</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+        <div class="reveal">
+            <p class="section-label">FAQ</p>
+            <h2 class="section-title">Kenalan Dengan Produk Anz</h2>
+            <p class="section-desc">Pertanyaan yang sering diajukan tentang produk dan layanan Anz.</p>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Apa itu Bot WhatsApp?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Bot WhatsApp merupakan sistem otomatis yang dapat membantu menjalankan berbagai fitur melalui WhatsApp, seperti downloader, tools, sticker maker, AI, fun menu, dan berbagai fungsi otomatis lainnya.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Apa itu Project File Remix?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Project/file remix adalah kumpulan bahan atau project audio yang dapat digunakan untuk proses editing/remixing musik sesuai kebutuhan.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Apa itu Sewa Bot WhatsApp?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Sewa bot WhatsApp merupakan layanan penggunaan bot dalam periode tertentu dengan fitur yang sudah tersedia tanpa harus membuat sistem bot sendiri dari awal.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Apakah bot bisa online 24/7?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Ya, bot Anz dirancang untuk bisa online 24/7 tanpa henti. Dengan dukungan server yang stabil dan anti bad session, bot akan tetap berjalan dengan baik.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Apakah tersedia premium?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Tentu saja. Tersedia fitur premium dengan akses lebih lengkap, termasuk premium apikey, fitur eksklusif, dan prioritas update.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Bagaimana cara order?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Cukup hubungi Anz melalui WhatsApp, sampaikan produk yang diinginkan, lalu lakukan pembayaran. Setelah itu produk akan langsung dikirim.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Apakah bisa request?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Bisa. Anz menerima request custom sesuai kebutuhan Anda. Silakan diskusikan langsung melalui WhatsApp.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Bagaimana cara menghubungi Anz?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-a"><p>Anda bisa menghubungi Anz langsung melalui WhatsApp di tombol Contact yang tersedia di website ini, atau melalui group dan saluran WhatsApp Anz.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section reveal">
+        <h2 class="cta-title">Ready to explore Anz?</h2>
+        <p class="cta-desc">Temukan produk digital, bot WhatsApp, remix project, dan berbagai layanan lainnya.</p>
+        <div class="cta-btns">
+            <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener" class="btn-primary"><i class="fab fa-whatsapp"></i> Contact Anz</a>
+            <a href="#produk" onclick="scrollToSection(event, 'produk')" class="btn-outline"><i class="fas fa-grid-2"></i> Explore Products</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div>
+                <div class="footer-brand-name">Anz</div>
+                <div class="footer-brand-tag">Sundanese Pride!</div>
+            </div>
+            <div class="footer-links">
+                <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener">Contact</a>
+                <a href="https://chat.whatsapp.com/L56tRscoyLy0P82BYiBv6B?s=cl&p=a&mlu=4" target="_blank" rel="noopener">Group</a>
+                <a href="https://whatsapp.com/channel/0029VbCXIQcChq6HvVPEaz0e" target="_blank" rel="noopener">Saluran</a>
+                <a href="https://youtube.com/@anzremixer?si=OdUt9VncAg6rFFVW" target="_blank" rel="noopener">Youtube</a>
+            </div>
+        </div>
+        <div class="footer-sep"></div>
+        <p class="footer-copy">&copy; Anz 2024-<span id="footerYear"></span> (real-time)</p>
+    </footer>
+</div>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Modal Script -->
+<div class="modal-overlay" id="modal-script" onclick="closeModalBackdrop(event, 'modal-script')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal('modal-script')" aria-label="Close"><i class="fas fa-times"></i></button>
+        <h3 class="modal-title">Script AI MD Bot WhatsApp</h3>
+        <div class="modal-body">
+            <div class="script-box">SCRIPT AI MD BOT WHATSAPP🍃
+
+┌─〔 🍃 〕 AnzY4kult ちびあい
+│ ↬ 1579+ fitur siap pakai
+│ ↬ Fitur brat keren gila slebew
+│ ↬ menu stiker, maker, fun, tools
+│ ↬ termasuk premium apikey
+│ ↬ auto downloader
+│ ↬ sewa & premium otomatis
+│ ↬ smart auto AI with sessions
+│ ↬ rapih & bersih — cocok untuk pemula
+│ ↬ selalu diupdate — teknologi terbaru
+│ ↬ menu button simple & struktur rapi
+│ ↬ anti over-limit & anti bad session
+│ ↬ No enc — siap online 24/7
+│ ↬ Price : Rp 75.000
+└──────────〔 🍃 〕</div>
+            <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener" class="modal-btn"><i class="fab fa-whatsapp"></i> Hubungi Anz</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Sewa Bot -->
+<div class="modal-overlay" id="modal-sewa" onclick="closeModalBackdrop(event, 'modal-sewa')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal('modal-sewa')" aria-label="Close"><i class="fas fa-times"></i></button>
+        <h3 class="modal-title">Sewa Bot WhatsApp</h3>
+        <div class="modal-body">
+            <p>Sewa bot whatsapp fitur premium</p>
+            <br>
+            <p>Terbaik yg pernah ada, dengan harga yg murah dan terjangkau.</p>
+            <br>
+            <p>Price 1 bulan 10k, dan seterusnya.</p>
+            <br>
+            <p>Hubungi di whatsapp Anz</p>
+            <br>
+            <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener" class="modal-btn"><i class="fab fa-whatsapp"></i> Chat Anz</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal FLM Remix -->
+<div class="modal-overlay" id="modal-flm" onclick="closeModalBackdrop(event, 'modal-flm')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal('modal-flm')" aria-label="Close"><i class="fas fa-times"></i></button>
+        <h3 class="modal-title">FLM Remix</h3>
+        <div class="modal-body">
+            <p>Ada beberapa varian flm remix enakeun kece dengan harga terjangkau juga dan bisa di nego juga.</p>
+            <ul class="flm-list">
+                <li><i class="fas fa-music" style="color:var(--accent);margin-right:10px;font-size:0.75rem;"></i> flm style daff fx</li>
+                <li><i class="fas fa-music" style="color:var(--accent);margin-right:10px;font-size:0.75rem;"></i> flm style enaff, v1, v2, v3</li>
+                <li><i class="fas fa-music" style="color:var(--accent);margin-right:10px;font-size:0.75rem;"></i> flm bootleg, v1, v2</li>
+                <li><i class="fas fa-music" style="color:var(--accent);margin-right:10px;font-size:0.75rem;"></i> flm style enakeunn</li>
+                <li><i class="fas fa-music" style="color:var(--accent);margin-right:10px;font-size:0.75rem;"></i> flm melody sad instrumen</li>
+            </ul>
+            <p>Untuk flm bisa bertanya-tanya lagi ke kontak Anz.</p>
+            <br>
+            <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener" class="modal-btn"><i class="fab fa-whatsapp"></i> Hubungi Anz</a>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FLOATING BUTTONS ===== -->
+<div class="fab-container">
+    <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener" class="fab fab-wa" aria-label="WhatsApp" id="fabWa">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <button class="fab fab-music" id="musicBtn" aria-label="Toggle music">
+        <i class="fas fa-volume-xmark music-icon" id="musicIcon"></i>
+    </button>
+</div>
+
+<!-- ===== BACK TO TOP ===== -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div class="toast-container" id="toastContainer"></div>
 
 <!-- ===== AUDIO ===== -->
-<audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
-  <source src="https://raw.githubusercontent.com/Anz559/Anz-media/main/allthekids.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://raw.githubusercontent.com/Anz559/Anz-media/main/allthekids.mp3" type="audio/mpeg">
 </audio>
 
-<!-- ===== WEATHER TOGGLE ===== -->
-<div class="weather-toggle">
-  <button class="weather-btn active" data-weather="snow" title="Salju">☃</button>
-  <button class="weather-btn" data-weather="rain" title="Hujan">🌧</button>
-</div>
-
-<!-- ===== MAIN ===== -->
-<div class="container">
-
-  <!-- TOP -->
-  <div class="top-section">
-    <div class="profile-card">
-      <img src="https://raw.githubusercontent.com/Anz559/Anz-media/main/IMG_20260628_040625_775.png" alt="Anz" class="profile-photo">
-      <div class="profile-name">Anz v•Hardcore</div>
-      <div class="profile-clock" id="clock">Memuat jam...</div>
-    </div>
-
-    <div class="click-card" id="clickCard">
-      <div class="click-card-title">Klik aku dong ka</div>
-      <div class="click-card-sub" id="clickCardSub">
-        <span class="music-indicator"></span> TAP HERE ✦
-      </div>
-    </div>
-  </div>
-
-  <!-- POPUP -->
-  <div class="popup-overlay" id="popup">
-    <div class="popup">
-      <button class="popup-close" id="popupClose">✕</button>
-      <h3>Untuk Kamu ❤</h3>
-      <p>Jangan lupa makan.</p>
-      <p>Jaga kesehatan kamu.</p>
-      <p>Jangan bandel.</p>
-      <p>Berberbakti kepada orang tua.</p>
-      <p>Jangan ngelawan orang tua heyy.</p>
-      <p>Dan selalu menghargai orang yang menghargai kamu.</p>
-      <p>Semoga harimu menyenangkan 🍻</p>
-      
-      <div class="music-popup-info" id="musicPopupInfo">
-        <span class="disc">🎵</span> <span id="musicInfoText">Menunggu musik dimulai...</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- BIODATA -->
-  <div class="card reveal">
-    <div class="card-title">Biodata</div>
-    <div class="card-text">
-      Haii gua Anz, dan umur gua ga tau, tgl lahir gua 22 Oktober 2003, gua dikenal sebagai owner terbaik di soal per group pan, dan gua juga di kenal anak bandel tapi baik pada siapa pun, tapi yaaaa menurut gua, gua jahat, tapi gapapa lah. Thanks udah bisa kagum sama gua. Gua seneng punya temen virtual kaya kalian. Kalau sempet ku nota nama temen gua disini, tapi ya begitulah, ga sempet njjirrr...semangat buat kalian 👊🏻
-    </div>
-  </div>
-
-  <!-- PRODUCTS & WHATSAPP -->
-  <div class="grid-2">
-    <div class="card reveal">
-      <div class="card-title">Menyediakan Produk</div>
-      <ul class="product-list">
-        <li>Script Bot WhatsApp</li>
-        <li>Script Bot Responder WhatsApp</li>
-        <li>Film Project Remix</li>
-        <li>Number Virtual</li>
-        <li>Panel Pterodactyl</li>
-        <li>Jasa Bug WhatsApp</li>
-        <li>APK Bug WhatsApp</li>
-      </ul>
-    </div>
-    <div class="card reveal">
-      <div class="card-title">Hubungi Anz</div>
-      <a href="https://wa.me/6285862504612?text=Hai%20Anz" target="_blank" class="wa-btn">
-        <span class="wa-btn-icon">🍺</span> WhatsApp Anz
-      </a>
-      <a href="https://whatsapp.com/channel/0029VbCXIQcChq6HvVPEaz0e" target="_blank" class="wa-btn">
-        <span class="wa-btn-icon">🍻</span> Saluran WhatsApp
-      </a>
-    </div>
-  </div>
-
-  <!-- COUNTER -->
-  <div class="card counter-card reveal">
-    <div class="card-title" style="justify-content:center;">User Yang Melihat Ini</div>
-    <div class="counter-number" id="counter">78.969.227</div>
-    <div class="counter-label">Total Views</div>
-  </div>
-
-  <!-- RENT BOT -->
-  <div class="card reveal">
-    <div class="card-title">Sewa Bot</div>
-    <div class="card-text" style="text-align:center; font-size:15.5px;">
-      Mau Sewa Bot???<br>
-      Apa mau jadi bot??<br>
-      Chat aja ke WhatsApp Anz ya kak.<br>
-      Thanks 🍻
-    </div>
-  </div>
-
-  <!-- BOT INFO -->
-  <div class="card reveal">
-    <div class="card-title">Apa Itu Bot WhatsApp?</div>
-    <p class="card-text" style="margin-bottom:14px;">
-      Bot WhatsApp adalah program yang dapat menjalankan berbagai tugas secara otomatis di WhatsApp tanpa harus dilakukan secara manual.
-    </p>
-    <div style="color:var(--neon-bright); font-weight:700; margin:14px 0 10px; text-shadow:0 0 8px var(--neon-glow);">✦ Fungsi Bot WhatsApp:</div>
-    <ul class="product-list">
-      <li>Menjawab chat secara otomatis.</li>
-      <li>Mengirim pesan welcome saat ada anggota masuk grup.</li>
-      <li>Mengirim pesan goodbye saat ada anggota keluar grup.</li>
-      <li>Memutar atau mengunduh musik &amp; video (sesuai fitur bot).</li>
-      <li>Membuat stiker dari foto atau video.</li>
-      <li>Menyediakan berbagai game sederhana di chat.</li>
-      <li>Membantu admin mengelola grup, seperti anti-spam, kick anggota, dan filter kata tertentu.</li>
-      <li>Menampilkan informasi seperti cuaca, waktu, atau hasil pencarian internet jika didukung.</li>
-    </ul>
-    <div style="color:var(--neon-bright); font-weight:700; margin:18px 0 8px; text-shadow:0 0 8px var(--neon-glow);">✦ Kesimpulan:</div>
-    <p class="card-text">
-      Bot WhatsApp dibuat untuk mempermudah berbagai aktivitas secara otomatis, mulai dari membalas pesan, mengelola grup, hingga menyediakan fitur hiburan dan informasi. Semakin lengkap script yang digunakan, semakin banyak pula fitur yang dimiliki bot.
-    </p>
-  </div>
-
-  <!-- GROUP -->
-  <div class="card reveal">
-    <div class="card-title">Grup Kita</div>
-    <div class="card-text" style="text-align:center; font-size:15.5px;">
-      Butuh grup yang terbaik??<br>
-      Ga ngebosenin??<br>
-      Join aja di grup kita yaaa.<br>
-      Owner baik.<br>
-      Grup ga ketat.<br>
-      Terbaik pokonya hehe.<br>
-      Kalau mau chat aja 🍻
-    </div>
-  </div>
-
-  <!-- QUOTE -->
-  <div class="card reveal quote-card">
-    <div class="quote-intro">Mau tau ini ga?? baca ya hehe</div>
-    <div class="quote-text">
-      "Owner yang baik bukan yang paling ditakuti, melainkan yang paling dihormati karena sikap, tanggung jawab, dan keadilannya."
-    </div>
-  </div>
-
-</div>
-
-<!-- ===== FLOATING DOCK ===== -->
-<div class="dock">
-  <a href="https://wa.me/6285862504612?text=Hai%20Anz" target="_blank" class="dock-item">💬<span class="label">WhatsApp</span></a>
-  <a href="https://whatsapp.com/channel/0029VbCXIQcChq6HvVPEaz0e" target="_blank" class="dock-item">📢<span class="label">Channel</span></a>
-  <a href="#" class="dock-item" id="dockMusicToggle">🎵<span class="label">Music On/Off</span></a>
-</div>
-
-<!-- ===== FOOTER ===== -->
-<div class="footer">
-  <div class="neon-line"></div>
-  <div class="footer-text">Created by Anz!!</div>
-  <div>2024-<span id="year"></span></div>
-</div>
-
 <script>
-/* =============================================
-   LOADING SCREEN
-============================================= */
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-  }, 2000);
-});
+(function() {
+    'use strict';
 
-/* =============================================
-   REALTIME CLOCK
-============================================= */
-function updateClock() {
-  const now = new Date();
-  const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  const day = days[now.getDay()];
-  const date = now.getDate();
-  const month = months[now.getMonth()];
-  const year = now.getFullYear();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  const s = String(now.getSeconds()).padStart(2,'0');
-  document.getElementById('clock').innerHTML =
-    `${day}, ${date} ${month} ${year}<br><span class="time">${h}:${m}:${s} WIB</span>`;
-}
-updateClock();
-setInterval(updateClock, 1000);
+    // ===== LOADING SCREEN =====
+    setTimeout(function() {
+        var loader = document.getElementById('loader');
+        loader.classList.add('hidden');
+        document.body.style.overflow = '';
+        showToast('fa-check-circle', 'Selamat datang di Anz!');
+    }, 2000);
 
-document.getElementById('year').textContent = new Date().getFullYear();
+    // ===== FOOTER YEAR =====
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
 
-/* =============================================
-   CURSOR GLOW
-============================================= */
-const cursorGlow = document.querySelector('.cursor-glow');
-const cursorRing = document.querySelector('.cursor-ring');
-let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
-let ringX = mouseX, ringY = mouseY;
-
-document.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  cursorGlow.style.left = mouseX + 'px';
-  cursorGlow.style.top = mouseY + 'px';
-});
-
-function animateRing() {
-  ringX += (mouseX - ringX) * 0.18;
-  ringY += (mouseY - ringY) * 0.18;
-  cursorRing.style.left = ringX + 'px';
-  cursorRing.style.top = ringY + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-
-document.querySelectorAll('a, button, .click-card, .card, .dock-item').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursorRing.style.width = '56px';
-    cursorRing.style.height = '56px';
-    cursorRing.style.borderColor = '#7df9ff';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursorRing.style.width = '38px';
-    cursorRing.style.height = '38px';
-    cursorRing.style.borderColor = '';
-  });
-});
-
-/* =============================================
-   MUSIC & POPUP INTEGRATION
-============================================= */
-const audio = document.getElementById('bgMusic');
-const clickCard = document.getElementById('clickCard');
-const popup = document.getElementById('popup');
-const popupClose = document.getElementById('popupClose');
-const clickCardSub = document.getElementById('clickCardSub');
-const musicPopupInfo = document.getElementById('musicPopupInfo');
-const musicInfoText = document.getElementById('musicInfoText');
-const dockMusicToggle = document.getElementById('dockMusicToggle');
-
-let isMusicPlaying = false;
-let hasMusicStarted = false;
-
-// Atur volume awal
-audio.volume = 0.10;
-
-// Fungsi untuk memulai musik (dengan sound)
-function startMusicWithSound() {
-  if (isMusicPlaying) return;
-  
-  audio.muted = false;
-  audio.volume = 0; // Mulai dari 0 untuk fade in
-  
-  const playPromise = audio.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      isMusicPlaying = true;
-      hasMusicStarted = true;
-      
-      // Update UI
-      clickCardSub.classList.add('playing');
-      clickCardSub.innerHTML = '<span class="music-indicator"></span> MUSIC PLAYING ✦';
-      
-      musicPopupInfo.classList.add('playing');
-      musicInfoText.textContent = 'Musik sedang dimainkan untukmu 🎶';
-      
-      // Fade in volume
-      let v = 0;
-      const fadeInterval = setInterval(() => {
-        v += 0.05;
-        if (v >= 0.6) {
-          v = 0.6;
-          clearInterval(fadeInterval);
+    // ===== NAVBAR SCROLL =====
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
         }
-        audio.volume = v;
-      }, 80);
-    }).catch((err) => {
-      console.log('Gagal memutar musik:', err.message);
-      musicInfoText.textContent = 'Klik di mana saja untuk memulai musik...';
     });
-  }
-}
 
-// Fungsi toggle musik
-function toggleMusic() {
-  if (isMusicPlaying) {
-    audio.pause();
-    isMusicPlaying = false;
-    clickCardSub.classList.remove('playing');
-    clickCardSub.innerHTML = '<span class="music-indicator"></span> TAP HERE ✦';
-    musicPopupInfo.classList.remove('playing');
-    musicInfoText.textContent = 'Musik dijeda. Klik card untuk memulai lagi.';
-  } else {
-    startMusicWithSound();
-  }
-}
+    // ===== HAMBURGER MENU =====
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileClose = document.getElementById('mobileClose');
 
-// Event Saat Card "Klik aku dong ka" ditekan
-clickCard.addEventListener('click', (e) => {
-  // Tampilkan popup
-  popup.classList.add('active');
-  
-  // Jika musik belum playing, langsung putar!
-  if (!isMusicPlaying) {
-    startMusicWithSound();
-  }
-});
-
-// Event tombol close popup
-popupClose.addEventListener('click', () => popup.classList.remove('active'));
-popup.addEventListener('click', (e) => {
-  if (e.target === popup) popup.classList.remove('active');
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') popup.classList.remove('active');
-});
-
-// Event tombol musik di dock
-dockMusicToggle.addEventListener('click', (e) => {
-  e.preventDefault();
-  toggleMusic();
-});
-
-/* =============================================
-   RIPPLE EFFECT
-============================================= */
-function addRipple(e, el) {
-  const ripple = document.createElement('span');
-  ripple.className = 'ripple';
-  const rect = el.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  ripple.style.width = ripple.style.height = size + 'px';
-  const x = (e.clientX || rect.left + rect.width/2) - rect.left - size/2;
-  const y = (e.clientY || rect.top + rect.height/2) - rect.top - size/2;
-  ripple.style.left = x + 'px';
-  ripple.style.top = y + 'px';
-  el.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 600);
-}
-
-document.querySelectorAll('.click-card, .wa-btn, .dock-item, .weather-btn, .popup-close').forEach(el => {
-  el.addEventListener('click', function(e) { addRipple(e, this); });
-});
-
-/* =============================================
-   3D CARD TILT
-============================================= */
-const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-
-if (!isTouch) {
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const rx = ((y - cy) / cy) * -6;
-      const ry = ((x - cx) / cx) * 6;
-      card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+    hamburgerBtn.addEventListener('click', function() {
+        mobileMenu.classList.add('open');
+        document.body.style.overflow = 'hidden';
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
-}
 
-/* =============================================
-   SCROLL REVEAL
-============================================= */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+    mobileClose.addEventListener('click', closeMobile);
+
+    function closeMobile() {
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
     }
-  });
-}, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    window.closeMobile = closeMobile;
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // ===== SCROLL TO SECTION =====
+    function scrollToSection(e, id) {
+        e.preventDefault();
+        var el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+    window.scrollToSection = scrollToSection;
 
-/* =============================================
-   COUNTER
-============================================= */
-const counterEl = document.getElementById('counter');
-let counter = parseInt(localStorage.getItem('anzCounter')) || 78969227;
+    // ===== PARTICLES =====
+    var particlesContainer = document.getElementById('particles');
+    for (var i = 0; i < 20; i++) {
+        var p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = (40 + Math.random() * 50) + '%';
+        p.style.animationDuration = (4 + Math.random() * 6) + 's';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        p.style.width = (2 + Math.random() * 3) + 'px';
+        p.style.height = p.style.width;
+        if (Math.random() > 0.5) p.style.background = 'var(--cyan)';
+        particlesContainer.appendChild(p);
+    }
 
-function formatNum(n) {
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
-function renderCounter(bump) {
-  counterEl.textContent = formatNum(counter);
-  if (bump) {
-    counterEl.classList.remove('bump');
-    void counterEl.offsetWidth;
-    counterEl.classList.add('bump');
-  }
-}
+    // ===== QUOTES ROTATION =====
+    var quotes = [
+        'Kadang yang kita butuhkan bukan jalan baru, tapi keberanian untuk melangkah.',
+        'Nggak semua yang pergi harus dikejar.',
+        'Pelan-pelan juga tetap sampai.',
+        'Hidup bukan perlombaan, jadi nikmati prosesnya.',
+        'Yang penting tetap jalan, walaupun pelan.',
+        'Jangan takut untuk mulai dari nol.',
+        'Semua yang indah butuh waktu.',
+        'Hidup ini singkat, jangan dihabiskan untuk overthinking.',
+        'Sadar atau tidak, kamu sudah jauh lebih kuat dari kemarin.',
+        'Tidak semua hal harus sempurna untuk dinikmati.'
+    ];
+    var quoteEl = document.getElementById('quoteText');
+    var currentQuote = 0;
 
-counter += Math.floor(Math.random() * 7) + 1;
-renderCounter(true);
-localStorage.setItem('anzCounter', counter);
+    function showQuote(index) {
+        quoteEl.style.opacity = '0';
+        setTimeout(function() {
+            quoteEl.innerHTML = '<span class="quote-mark">\u00AB</span> "' + quotes[index] + '" <span class="quote-mark">\u00BB</span>';
+            quoteEl.style.opacity = '1';
+        }, 500);
+    }
+    showQuote(0);
+    setInterval(function() {
+        currentQuote = (currentQuote + 1) % quotes.length;
+        showQuote(currentQuote);
+    }, 5000);
 
-setInterval(() => {
-  counter += 1;
-  renderCounter(true);
-  localStorage.setItem('anzCounter', counter);
-}, 10000);
-
-/* =============================================
-   WEATHER EFFECT
-============================================= */
-const wCanvas = document.getElementById('weatherCanvas');
-const wCtx = wCanvas.getContext('2d');
-let weatherType = 'snow';
-let wParticles = [];
-
-function resizeWeather() {
-  wCanvas.width = window.innerWidth;
-  wCanvas.height = window.innerHeight;
-}
-resizeWeather();
-window.addEventListener('resize', resizeWeather);
-
-function createParticle(type) {
-  if (type === 'snow') {
-    return {
-      x: Math.random() * wCanvas.width,
-      y: Math.random() * wCanvas.height,
-      size: Math.random() * 2.5 + 0.8,
-      speed: Math.random() * 1.2 + 0.4,
-      opacity: Math.random() * 0.6 + 0.3,
-      wind: (Math.random() - 0.5) * 0.6,
-      drift: Math.random() * Math.PI * 2
+    // ===== FAQ ACCORDION =====
+    window.toggleFaq = function(el) {
+        var item = el.parentElement;
+        var wasActive = item.classList.contains('active');
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(function(fi) {
+            fi.classList.remove('active');
+        });
+        if (!wasActive) {
+            item.classList.add('active');
+        }
     };
-  } else {
-    return {
-      x: Math.random() * wCanvas.width,
-      y: Math.random() * wCanvas.height,
-      length: Math.random() * 14 + 8,
-      speed: Math.random() * 7 + 9,
-      opacity: Math.random() * 0.35 + 0.25
+
+    // ===== MODALS =====
+    window.openModal = function(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden';
     };
-  }
-}
+    window.closeModal = function(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = '';
+    };
+    window.closeModalBackdrop = function(e, id) {
+        if (e.target === e.currentTarget) {
+            closeModal(id);
+        }
+    };
 
-function initWeather() {
-  wParticles = [];
-  const count = weatherType === 'snow' ? 70 : 120;
-  for (let i = 0; i < count; i++) wParticles.push(createParticle(weatherType));
-}
-initWeather();
-
-function animateWeather() {
-  wCtx.clearRect(0, 0, wCanvas.width, wCanvas.height);
-  if (weatherType === 'snow') {
-    wCtx.shadowColor = '#7df9ff';
-    wCtx.shadowBlur = 4;
-    wParticles.forEach(p => {
-      p.drift += 0.02;
-      p.y += p.speed;
-      p.x += p.wind + Math.sin(p.drift) * 0.4;
-      if (p.y > wCanvas.height) { p.y = -10; p.x = Math.random() * wCanvas.width; }
-      wCtx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
-      wCtx.beginPath();
-      wCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      wCtx.fill();
+    // Close modal with ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.active').forEach(function(m) {
+                m.classList.remove('active');
+            });
+            document.body.style.overflow = '';
+            if (mobileMenu.classList.contains('open')) closeMobile();
+        }
     });
-  } else {
-    wCtx.shadowColor = '#00e5ff';
-    wCtx.shadowBlur = 2;
-    wCtx.lineWidth = 1.4;
-    wParticles.forEach(p => {
-      p.y += p.speed;
-      if (p.y > wCanvas.height) { p.y = -p.length; p.x = Math.random() * wCanvas.width; }
-      wCtx.strokeStyle = `rgba(150, 210, 255, ${p.opacity})`;
-      wCtx.beginPath();
-      wCtx.moveTo(p.x, p.y);
-      wCtx.lineTo(p.x, p.y + p.length);
-      wCtx.stroke();
+
+    // Product card keyboard support
+    document.querySelectorAll('.product-card').forEach(function(card) {
+        card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                card.click();
+            }
+        });
     });
-  }
-  requestAnimationFrame(animateWeather);
-}
-animateWeather();
 
-document.querySelectorAll('.weather-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    weatherType = btn.dataset.weather;
-    initWeather();
-  });
-});
-
-/* =============================================
-   NEON PARTICLES BACKGROUND
-============================================= */
-const pCanvas = document.getElementById('particlesCanvas');
-const pCtx = pCanvas.getContext('2d');
-
-function resizeParticles() {
-  pCanvas.width = window.innerWidth;
-  pCanvas.height = window.innerHeight;
-}
-resizeParticles();
-window.addEventListener('resize', resizeParticles);
-
-const neonParticles = [];
-const PCOUNT = window.innerWidth < 600 ? 25 : 45;
-for (let i = 0; i < PCOUNT; i++) {
-  neonParticles.push({
-    x: Math.random() * pCanvas.width,
-    y: Math.random() * pCanvas.height,
-    size: Math.random() * 1.8 + 0.4,
-    sx: (Math.random() - 0.5) * 0.4,
-    sy: (Math.random() - 0.5) * 0.4,
-    opacity: Math.random() * 0.5 + 0.15,
-    pulse: Math.random() * Math.PI * 2
-  });
-}
-
-function animateNeonParticles() {
-  pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-  neonParticles.forEach(p => {
-    p.x += p.sx;
-    p.y += p.sy;
-    p.pulse += 0.02;
-    if (p.x < 0) p.x = pCanvas.width;
-    if (p.x > pCanvas.width) p.x = 0;
-    if (p.y < 0) p.y = pCanvas.height;
-    if (p.y > pCanvas.height) p.y = 0;
-    const op = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
-    pCtx.fillStyle = `rgba(0, 229, 255, ${op})`;
-    pCtx.shadowColor = '#00e5ff';
-    pCtx.shadowBlur = 8;
-    pCtx.beginPath();
-    pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    pCtx.fill();
-  });
-  requestAnimationFrame(animateNeonParticles);
-}
-animateNeonParticles();
-
-/* =============================================
-   FLOATING ICONS
-============================================= */
-const floatIcons = ['✦','✧','◆','◇','★','✦','✧'];
-function spawnFloatingIcon() {
-  const icon = document.createElement('div');
-  icon.className = 'floating-icon';
-  icon.textContent = floatIcons[Math.floor(Math.random() * floatIcons.length)];
-  icon.style.left = Math.random() * 100 + 'vw';
-  icon.style.fontSize = (Math.random() * 14 + 9) + 'px';
-  const dur = Math.random() * 8 + 10;
-  icon.style.animationDuration = dur + 's';
-  document.body.appendChild(icon);
-  setTimeout(() => icon.remove(), dur * 1000 + 500);
-}
-setInterval(spawnFloatingIcon, 1800);
-for (let i = 0; i < 5; i++) {
-  setTimeout(spawnFloatingIcon, i * 600);
-}
-
-/* =============================================
-   SMOOTH SCROLL FOR DOCK LINKS
-============================================= */
-document.querySelectorAll('a[href="#"]').forEach(a => {
-  if (a.id !== 'dockMusicToggle') {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // ===== BACK TO TOP =====
+    var backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 600) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
     });
-  }
-});
-
-/* =============================================
-   PARALLAX SUBTLE EFFECT ON SCROLL
-============================================= */
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      const y = window.scrollY;
-      const profileCard = document.querySelector('.profile-card');
-      if (profileCard) {
-        profileCard.style.transform = `translateY(${y * 0.05}px)`;
-      }
-      ticking = false;
+    backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    ticking = true;
-  }
-});
 
+    // ===== MUSIC CONTROL =====
+    var bgMusic = document.getElementById('bgMusic');
+    var musicBtn = document.getElementById('musicBtn');
+    var musicIcon = document.getElementById('musicIcon');
+    var musicPlaying = false;
+    var musicStarted = false;
+
+    bgMusic.volume = 0.99;
+
+    function startMusic() {
+        if (!musicStarted) {
+            musicStarted = true;
+            bgMusic.play().then(function() {
+                musicPlaying = true;
+                updateMusicIcon();
+                showToast('fa-music', 'Musik diputar');
+            }).catch(function() {
+                musicStarted = false;
+            });
+        }
+    }
+
+    function toggleMusic() {
+        if (!musicStarted) {
+            startMusic();
+            return;
+        }
+        if (musicPlaying) {
+            bgMusic.pause();
+            musicPlaying = false;
+        } else {
+            bgMusic.play();
+            musicPlaying = true;
+        }
+        updateMusicIcon();
+    }
+
+    function updateMusicIcon() {
+        if (musicPlaying) {
+            musicIcon.className = 'fas fa-volume-high music-icon';
+            musicBtn.classList.add('playing');
+        } else {
+            musicIcon.className = 'fas fa-volume-xmark music-icon';
+            musicBtn.classList.remove('playing');
+        }
+    }
+
+    musicBtn.addEventListener('click', toggleMusic);
+
+    // Autoplay attempt
+    var autoplayAttempted = false;
+    function attemptAutoplay() {
+        if (autoplayAttempted) return;
+        autoplayAttempted = true;
+        bgMusic.play().then(function() {
+            musicPlaying = true;
+            musicStarted = true;
+            updateMusicIcon();
+        }).catch(function() {
+            musicStarted = false;
+            autoplayAttempted = false; // Allow retry on interaction
+        });
+    }
+
+    // Fallback: start music on first user interaction
+    var interactionHandler = function() {
+        if (!musicStarted) {
+            startMusic();
+        }
+        document.removeEventListener('click', interactionHandler);
+        document.removeEventListener('touchstart', interactionHandler);
+        document.removeEventListener('scroll', interactionHandler);
+    };
+    document.addEventListener('click', interactionHandler, { once: false });
+    document.addEventListener('touchstart', interactionHandler, { once: false });
+    document.addEventListener('scroll', interactionHandler, { once: false });
+
+    // Try autoplay after loader
+    setTimeout(attemptAutoplay, 100);
+
+    // ===== SCROLL REVEAL =====
+    var revealElements = document.querySelectorAll('.reveal');
+    var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+
+                // Stagger other-products items
+                var opItems = entry.target.querySelectorAll('.op-item');
+                if (opItems.length > 0) {
+                    opItems.forEach(function(item, idx) {
+                        var delay = parseInt(item.getAttribute('data-delay')) || idx * 100;
+                        setTimeout(function() {
+                            item.classList.add('visible');
+                        }, delay);
+                    });
+                }
+
+                // Counter animation
+                var counters = entry.target.querySelectorAll('.counter');
+                counters.forEach(function(counter) {
+                    animateCounter(counter);
+                });
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach(function(el) {
+        revealObserver.observe(el);
+    });
+
+    // ===== COUNTER ANIMATION =====
+    function animateCounter(el) {
+        if (el.dataset.animated) return;
+        el.dataset.animated = 'true';
+        var target = parseInt(el.getAttribute('data-target'));
+        var duration = 1500;
+        var start = 0;
+        var startTime = null;
+
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / duration, 1);
+            // Ease out
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = Math.floor(eased * target);
+            el.textContent = current;
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                el.textContent = target;
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    // ===== TOAST NOTIFICATION =====
+    function showToast(icon, message) {
+        var container = document.getElementById('toastContainer');
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = '<i class="fas ' + icon + '"></i> ' + message;
+        container.appendChild(toast);
+
+        setTimeout(function() {
+            toast.classList.add('removing');
+            setTimeout(function() {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+    window.showToast = showToast;
+
+})();
 </script>
 </body>
-    </html>
+</html>
