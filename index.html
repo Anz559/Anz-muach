@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07110f">
+<meta name="description" content="Anz — Sundanese Pride! Official digital brand, WhatsApp bot, remix project and digital services.">
+<title>Anz — Sundanese Pride!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050807;--card:rgba(10,20,18,.78);--line:rgba(160,255,220,.16);--text:#f4fffb;--muted:#a8bbb5;--accent:#55e6b0;--cyan:#55d9ff;--gold:#d8bd72;--shadow:0 24px 80px rgba(0,0,0,.45)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"DM Sans",sans-serif;color:var(--text);background:#050807;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-3;background:url("https://raw.githubusercontent.com/Anz559/Anz-media-web-baru/main/330bfba4c943aba03c34cae5389ad6f7.jpg") center center/cover no-repeat;background-attachment:fixed}
+body:after{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(2,7,6,.24),rgba(2,7,6,.64) 48%,rgba(2,7,6,.86))}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.container{width:min(1160px,calc(100% - 36px));margin:auto}
+.glass{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#040807;transition:opacity .45s,visibility .45s}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-box{text-align:center;width:min(520px,calc(100% - 36px));padding:34px 26px;border-radius:28px}
+.loader-mark{font:700 44px "Space Grotesk";letter-spacing:-2px}
+.loader-mark span{color:var(--accent)}
+.loader-title{margin:14px 0 8px;font-size:19px;font-weight:700}
+.loader-sub{color:var(--muted);line-height:1.65;font-size:14px}
+#startMusic{margin-top:20px;border:1px solid rgba(85,230,176,.35);background:rgba(85,230,176,.1);color:var(--text);padding:10px 20px;border-radius:999px;font-weight:700;cursor:pointer}
+nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);width:min(1100px,calc(100% - 28px));z-index:1000;border-radius:18px;padding:11px 15px}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Space Grotesk"}
+.brand strong{font-size:21px}.brand small{color:var(--muted);font-size:11px}
+.nav-links{display:flex;align-items:center;gap:5px}
+.nav-links a{padding:9px 11px;border-radius:11px;color:#cfe0da;font-size:13px;font-weight:600;transition:.25s}
+.nav-links a:hover,.nav-links a.active{color:#fff;background:rgba(85,230,176,.1)}
+.menu-btn{display:none;border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}
+.hero{min-height:100svh;display:flex;align-items:center;padding:130px 0 80px;position:relative}
+.hero-content{max-width:800px}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(8,19,16,.55);padding:8px 13px;border-radius:999px;color:#ccebe1;font-size:11px;letter-spacing:1.5px;font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px var(--accent)}
+h1{font:700 clamp(64px,12vw,140px)/.88 "Space Grotesk";letter-spacing:-7px;margin:25px 0 10px}
+.gradient{background:linear-gradient(90deg,#fff,#c9fff0 42%,#65e5b2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.jp{font-size:clamp(17px,2.2vw,25px);color:#c4d8d2;letter-spacing:5px}
+.hero p{max-width:650px;color:var(--muted);font-size:16px;line-height:1.8;margin:22px 0 28px}
+.actions{display:flex;flex-wrap:wrap;gap:11px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);padding:12px 18px;border-radius:13px;color:#fff;background:rgba(9,18,16,.7);font-weight:700;font-size:13px;cursor:pointer;transition:.25s}
+.btn:hover{transform:translateY(-2px);border-color:rgba(85,230,176,.45);box-shadow:0 12px 30px rgba(85,230,176,.12)}
+.btn.primary{background:linear-gradient(135deg,#49dca8,#249b78);color:#03100c;border-color:transparent}
+section{padding:100px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:32px}
+.eyebrow{color:var(--accent);font-size:11px;letter-spacing:2px;font-weight:800;text-transform:uppercase}
+h2{font:700 clamp(34px,5vw,58px)/1 "Space Grotesk";letter-spacing:-2px;margin-top:8px}
+.section-head p{max-width:440px;color:var(--muted);line-height:1.7;font-size:14px}
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.product-card{position:relative;overflow:hidden;border-radius:25px;padding:27px;min-height:320px;display:flex;flex-direction:column;justify-content:space-between;transition:.35s}
+.product-card:before,.mini:before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(85,230,176,.4),transparent 35%,rgba(85,217,255,.2),transparent 75%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.product-card:hover{transform:translateY(-6px);box-shadow:0 30px 90px rgba(0,0,0,.55)}
+.card-icon{font-size:34px;margin-bottom:18px}.card-title{font:700 28px "Space Grotesk";margin-bottom:5px}.card-sub{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:1px}.card-desc{color:var(--muted);font-size:14px;line-height:1.7;margin-top:15px;max-width:500px}
+.more-panel{margin-top:18px;border-radius:25px;padding:26px}
+.more-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:20px}
+.more-item{padding:17px 12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025);text-align:center;color:#dbe9e5;font-size:12px;font-weight:700;transition:.25s}
+.more-item:hover{transform:translateY(-3px);border-color:rgba(85,230,176,.4);background:rgba(85,230,176,.06)}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.note{padding:22px;border-radius:20px;min-height:125px;display:flex;align-items:center;color:#dce9e5;line-height:1.7;font-size:14px}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.mini{position:relative;padding:23px;border-radius:20px;min-height:180px}
+.mini b{font:700 30px "Space Grotesk";color:var(--accent)}
+.mini h3{margin:13px 0 7px}.mini p{color:var(--muted);font-size:13px;line-height:1.65}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{padding:27px;border-radius:20px;text-align:center}.stat strong{display:block;font:700 36px "Space Grotesk";color:#fff}.stat span{color:var(--muted);font-size:12px;letter-spacing:1px}
+.faq{max-width:850px;margin:auto}.faq-item{border-bottom:1px solid var(--line)}.faq-q{width:100%;padding:20px 2px;background:none;border:0;color:#fff;display:flex;justify-content:space-between;text-align:left;font-weight:700;cursor:pointer}.faq-a{max-height:0;overflow:hidden;color:var(--muted);line-height:1.75;font-size:14px;transition:max-height .35s,padding .35s}.faq-item.open .faq-a{max-height:220px;padding:0 0 20px}.faq-q span{transition:.25s}.faq-item.open .faq-q span{transform:rotate(45deg)}
+.cta{border-radius:30px;padding:55px;text-align:center;position:relative;overflow:hidden}.cta:before{content:"";position:absolute;width:300px;height:300px;right:-130px;top:-170px;border-radius:50%;background:rgba(85,230,176,.12);filter:blur(30px)}.cta p{color:var(--muted);margin:15px auto 25px;max-width:600px;line-height:1.7}
+footer{padding:35px 0 45px;border-top:1px solid var(--line);background:rgba(2,7,6,.45)}.footer-row{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer-brand{font:700 22px "Space Grotesk"}.footer-brand small{display:block;color:var(--muted);font:500 11px "DM Sans";margin-top:4px}.footer-links{display:flex;gap:15px;flex-wrap:wrap}.footer-links a{color:var(--muted);font-size:12px}.copyright{margin-top:25px;color:#78908a;font-size:11px}
+.modal{position:fixed;inset:0;z-index:2000;display:none;place-items:center;padding:20px;background:rgba(0,0,0,.72);backdrop-filter:blur(7px)}.modal.show{display:grid}.modal-box{width:min(680px,100%);max-height:85svh;overflow:auto;border-radius:26px;padding:28px;position:relative;animation:pop .28s ease}.modal-box::-webkit-scrollbar{width:5px}.modal-box::-webkit-scrollbar-thumb{background:rgba(85,230,176,.3);border-radius:10px}.close{position:absolute;right:17px;top:15px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;font-size:20px}.modal h3{font:700 26px "Space Grotesk";margin-bottom:18px}.modal-content{white-space:pre-line;color:#d7e6e1;line-height:1.75;font-size:13px}.modal-actions{margin-top:22px}
+.music,.wa,.top{position:fixed;z-index:900;bottom:18px;width:47px;height:47px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:rgba(5,13,11,.88);color:#fff;box-shadow:0 12px 35px rgba(0,0,0,.35);cursor:pointer}.music{right:76px}.wa{right:18px;background:#159d6d;border-color:transparent}.top{right:18px;bottom:76px;opacity:0;pointer-events:none;transition:.25s}.top.show{opacity:1;pointer-events:auto}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;z-index:3000;background:#0c1915;border:1px solid var(--line);padding:11px 16px;border-radius:12px;font-size:12px;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:none}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(130,255,220,.65);box-shadow:0 0 15px rgba(85,230,176,.7);animation:float 5s ease-in-out infinite;pointer-events:none}.p1{left:12%;top:30%}.p2{right:18%;top:22%;animation-delay:1s}.p3{right:30%;bottom:18%;animation-delay:2s}
+@keyframes pop{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:none}}
+@keyframes float{50%{transform:translateY(-12px);opacity:.45}}
+@media(max-width:820px){.nav-links{position:absolute;left:10px;right:10px;top:62px;padding:10px;display:none;flex-direction:column;align-items:stretch;border-radius:16px;background:rgba(5,12,10,.96);border:1px solid var(--line)}.nav-links.open{display:flex}.nav-links a{text-align:center}.menu-btn{display:block}.products-grid,.notes{grid-template-columns:1fr}.why-grid{grid-template-columns:repeat(2,1fr)}.more-grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.section-head{display:block}.section-head p{margin-top:15px}h1{letter-spacing:-4px}}
+@media(max-width:500px){.container{width:min(100% - 24px,1160px)}section{padding:72px 0}.hero{padding-top:120px}.hero p{font-size:14px}.why-grid{grid-template-columns:1fr}.more-grid{grid-template-columns:repeat(2,1fr)}.cta{padding:35px 20px}.footer-row{align-items:flex-start;flex-direction:column}.music{right:72px}.jp{letter-spacing:3px}.modal{padding:12px}.modal-box{padding:23px 18px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="loader">
+  <div class="loader-box glass">
+    <div class="loader-mark">Anz<span>.</span></div>
+    <div class="loader-title">Hai,,Gua Anz 🍻</div>
+    <div class="loader-sub">Web resmi Anz,putar musik favorit mu sebelum memulai website ya</div>
+    <button id="startMusic">ok 🍻</button>
+  </div>
+</div>
+
+<nav class="glass">
+  <div class="nav-inner">
+    <a class="brand" href="#home"><strong>Anz</strong><small>Sundanese Pride!</small></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Buka menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#products">Produk</a>
+      <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener">Contact</a>
+      <a href="https://chat.whatsapp.com/L56tRscoyLy0P82BYiBv6B?s=cl&p=a&mlu=4" target="_blank" rel="noopener">Group</a>
+      <a href="https://whatsapp.com/channel/0029VbCXIQcChq6HvVPEaz0e" target="_blank" rel="noopener">Saluran</a>
+      <a href="https://youtube.com/@anzremixer?si=OdUt9VncAg6rFFVW" target="_blank" rel="noopener">Youtube</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<section class="hero" id="home">
+  <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span>
+  <div class="container">
+    <div class="hero-content reveal">
+      <div class="badge"><i class="dot"></i> ANZ DIGITAL</div>
+      <h1 class="gradient">Anz</h1>
+      <div class="jp">スンダ人の誇り</div>
+      <p>Welcome to the official Anz server.<br>We hope you enjoy Anz products.</p>
+      <div class="actions">
+        <a class="btn primary" href="#products">Explore Products ↘</a>
+        <a class="btn" href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener">Contact Anz ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="products">
+<div class="container">
+  <div class="section-head reveal"><div><div class="eyebrow">Digital Collection</div><h2>Produk Anz</h2></div><p>Produk digital, bot WhatsApp, remix project, dan layanan yang dikemas dengan pengalaman sederhana dan premium.</p></div>
+  <div class="products-grid">
+    <article class="product-card glass reveal" data-modal="script">
+      <div><div class="card-icon">⌁</div><div class="card-title">Script</div><div class="card-sub">AI MD BOT WHATSAPP</div><p class="card-desc">Bot WhatsApp dengan banyak fitur siap pakai, AI, tools, downloader, premium, sewa otomatis, dan struktur yang rapi.</p></div>
+      <button class="btn primary open-modal">Lihat Detail ↗</button>
+    </article>
+    <article class="product-card glass reveal" data-modal="sewa">
+      <div><div class="card-icon">◉</div><div class="card-title">Sewa Bot WhatsApp</div><div class="card-sub">PREMIUM WHATSAPP BOT</div><p class="card-desc">Gunakan bot WhatsApp dengan fitur premium tanpa perlu membangun sistem bot sendiri dari awal.</p></div>
+      <button class="btn primary open-modal">Lihat Detail ↗</button>
+    </article>
+    <article class="product-card glass reveal" data-modal="flm">
+      <div><div class="card-icon">♫</div><div class="card-title">FLM Remix</div><div class="card-sub">PREMIUM REMIX PROJECT</div><p class="card-desc">Beberapa varian FLM remix enakeun dan kece dengan harga terjangkau serta bisa dinego.</p></div>
+      <button class="btn primary open-modal">Lihat Detail ↗</button>
+    </article>
+    <aside class="more-panel glass reveal">
+      <div class="eyebrow">More Digital</div><h3 style="font:700 25px 'Space Grotesk';margin-top:7px">Produk lainnya</h3>
+      <div class="more-grid">
+        <div class="more-item">▣<br><br>Apk</div><div class="more-item">⌘<br><br>Jasa bug wa</div><div class="more-item">▤<br><br>Panell Pterodactyle</div>
+        <div class="more-item">◌<br><br>Nomor virtual</div><div class="more-item">↯<br><br>Script responder</div><div class="more-item">⌘<br><br>Html website</div>
+      </div>
+    </aside>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="section-head reveal"><div><div class="eyebrow">Life Notes</div><h2>Kata² Random Kehidupan</h2></div></div>
+  <div class="notes">
+    <div class="note glass reveal">«"Kadang yang kita butuhkan bukan jalan baru, tapi keberanian untuk melangkah."»</div>
+    <div class="note glass reveal">«"Nggak semua yang pergi harus dikejar."»</div>
+    <div class="note glass reveal">«"Pelan-pelan juga tetap sampai."»</div>
+    <div class="note glass reveal">«"Hidup bukan perlombaan, jadi nikmati prosesnya."»</div>
+    <div class="note glass reveal">«"Yang penting tetap jalan, walaupun pelan."»</div>
+    <div class="note glass reveal" id="rotatingQuote">«"Jangan lupa menikmati perjalanan."»</div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="section-head reveal"><div><div class="eyebrow">The Anz Standard</div><h2>Why Choose Anz?</h2></div></div>
+  <div class="why-grid">
+    <div class="mini glass reveal"><b>01</b><h3>Premium</h3><p>Produk dibuat dengan konsep modern dan profesional.</p></div>
+    <div class="mini glass reveal"><b>02</b><h3>Updated</h3><p>Selalu dikembangkan dan diperbarui.</p></div>
+    <div class="mini glass reveal"><b>03</b><h3>Affordable</h3><p>Harga dibuat terjangkau.</p></div>
+    <div class="mini glass reveal"><b>04</b><h3>Support</h3><p>Bisa langsung menghubungi Anz melalui WhatsApp.</p></div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="stats">
+    <div class="stat glass reveal"><strong data-target="1579">0+</strong><span>FEATURES</span></div>
+    <div class="stat glass reveal"><strong>24/7</strong><span>BOT ONLINE</span></div>
+    <div class="stat glass reveal"><strong>2024–2026</strong><span>JOURNEY</span></div>
+    <div class="stat glass reveal"><strong>100%</strong><span>DIGITAL</span></div>
+  </div>
+</div>
+</section>
+
+<section id="faq">
+<div class="container">
+  <div class="section-head reveal"><div><div class="eyebrow">Knowledge Base</div><h2>Kenalan Dengan Produk Anz</h2></div><p>Jawaban singkat untuk pertanyaan yang sering muncul sebelum mulai menggunakan produk.</p></div>
+  <div class="faq glass" style="padding:8px 24px">
+    <div class="faq-item"><button class="faq-q">Apa itu Bot WhatsApp?<span>＋</span></button><div class="faq-a">Bot WhatsApp merupakan sistem otomatis yang dapat membantu menjalankan berbagai fitur melalui WhatsApp, seperti downloader, tools, sticker maker, AI, fun menu, dan berbagai fungsi otomatis lainnya.</div></div>
+    <div class="faq-item"><button class="faq-q">Apa itu Project File Remix?<span>＋</span></button><div class="faq-a">Project/file remix adalah kumpulan bahan atau project audio yang dapat digunakan untuk proses editing atau remixing musik sesuai kebutuhan.</div></div>
+    <div class="faq-item"><button class="faq-q">Apa itu Sewa Bot WhatsApp?<span>＋</span></button><div class="faq-a">Sewa bot WhatsApp merupakan layanan penggunaan bot dalam periode tertentu dengan fitur yang sudah tersedia tanpa harus membuat sistem bot sendiri dari awal.</div></div>
+    <div class="faq-item"><button class="faq-q">Apakah bot bisa online 24/7?<span>＋</span></button><div class="faq-a">Bot dirancang untuk dapat dijalankan secara terus-menerus selama server atau hosting yang digunakan tetap aktif dan stabil.</div></div>
+    <div class="faq-item"><button class="faq-q">Apakah tersedia premium?<span>＋</span></button><div class="faq-a">Tersedia pilihan produk dan layanan premium. Detail fitur dan harga dapat ditanyakan langsung kepada Anz.</div></div>
+    <div class="faq-item"><button class="faq-q">Bagaimana cara order atau request?<span>＋</span></button><div class="faq-a">Hubungi Anz melalui WhatsApp. Sampaikan produk atau request yang diinginkan agar detailnya dapat dibicarakan langsung.</div></div>
+    <div class="faq-item"><button class="faq-q">Bagaimana cara menghubungi Anz?<span>＋</span></button><div class="faq-a">Gunakan tombol Contact Anz atau floating WhatsApp di kanan bawah untuk langsung membuka percakapan WhatsApp.</div></div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="cta glass reveal">
+    <div class="eyebrow">Start Something</div><h2>Ready to explore Anz?</h2>
+    <p>Temukan produk digital, bot WhatsApp, remix project, dan berbagai layanan lainnya.</p>
+    <div class="actions" style="justify-content:center">
+      <a class="btn primary" href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener">Contact Anz ↗</a>
+      <a class="btn" href="#products">Explore Products ↓</a>
+    </div>
+  </div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+  <div class="footer-row">
+    <div class="footer-brand">Anz<small>Sundanese Pride!</small></div>
+    <div class="footer-links">
+      <a href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener">Contact</a>
+      <a href="https://chat.whatsapp.com/L56tRscoyLy0P82BYiBv6B?s=cl&p=a&mlu=4" target="_blank" rel="noopener">Group</a>
+      <a href="https://whatsapp.com/channel/0029VbCXIQcChq6HvVPEaz0e" target="_blank" rel="noopener">Saluran</a>
+      <a href="https://youtube.com/@anzremixer?si=OdUt9VncAg6rFFVW" target="_blank" rel="noopener">Youtube</a>
+    </div>
+  </div>
+  <div class="copyright">© Anz 2024-2026 (real-time) · <span id="yearNow"></span></div>
+</div>
+</footer>
+
+<a class="music" id="musicBtn" href="#" aria-label="Kontrol musik">♫</a>
+<a class="wa" href="http://wa.me/6285862504612?text=Hallo%20Anz" target="_blank" rel="noopener" aria-label="WhatsApp">✆</a>
+<button class="top" id="topBtn" aria-label="Kembali ke atas">↑</button>
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="modal">
+  <div class="modal-box glass">
+    <button class="close" id="closeModal" aria-label="Tutup">×</button>
+    <h3 id="modalTitle"></h3>
+    <div class="modal-content" id="modalContent"></div>
+    <div class="modal-actions"><a id="modalAction" class="btn primary" target="_blank" rel="noopener">Hubungi Anz ↗</a></div>
+  </div>
+</div>
+
+<audio id="bgAudio" loop preload="auto" playsinline>
+  <source src="https://raw.githubusercontent.com/Anz559/Media-bot/main/anz.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const WA="http://wa.me/6285862504612?text=Hallo%20Anz";
+const loader=document.getElementById("loader"), startMusic=document.getElementById("startMusic"), audio=document.getElementById("bgAudio");
+const musicBtn=document.getElementById("musicBtn"), toast=document.getElementById("toast");
+let musicOn=false;
+
+function showToast(t){toast.textContent=t;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1800)}
+async function playMusic(){
+  try{await audio.play();musicOn=true;musicBtn.textContent="❚❚";showToast("Musik aktif 🎵")}
+  catch(e){musicOn=false;musicBtn.textContent="♫";showToast("Tekan lagi untuk memutar musik")}
+}
+startMusic.addEventListener("click",async()=>{await playMusic();});
+musicBtn.addEventListener("click",async e=>{e.preventDefault();if(musicOn){audio.pause();musicOn=false;musicBtn.textContent="♫";showToast("Musik dijeda")}else await playMusic()});
+
+setTimeout(()=>loader.classList.add("hide"),2000);
+setTimeout(()=>{if(!musicOn) audio.play().then(()=>{musicOn=true;musicBtn.textContent="❚❚"}).catch(()=>{})},300);
+
+const menuBtn=document.getElementById("menuBtn"),navLinks=document.getElementById("navLinks");
+menuBtn.addEventListener("click",()=>navLinks.classList.toggle("open"));
+navLinks.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>navLinks.classList.remove("open")));
+
+const modal=document.getElementById("modal"),modalTitle=document.getElementById("modalTitle"),modalContent=document.getElementById("modalContent"),modalAction=document.getElementById("modalAction");
+const data={
+script:{title:"SCRIPT AI MD BOT WHATSAPP🍃",content:`┌─〔 🍃 〕 AnzY4kult ちびあい
+│ ↬ 1579+ fitur siap pakai
+│ ↬ Fitur brat keren gila slebew
+│ ↬ menu stiker, maker, fun, tools
+│ ↬ termasuk premium apikey
+│ ↬ auto downloader
+│ ↬ sewa & premium otomatis
+│ ↬ smart auto AI with sessions
+│ ↬ rapih & bersih — cocok untuk pemula
+│ ↬ selalu diupdate — teknologi terbaru
+│ ↬ menu button simple & struktur rapi
+│ ↬ anti over-limit & anti bad session
+│ ↬ No enc — siap online 24/7
+│ ↬ Price : Rp 75.000
+└──────────〔 🍃 〕`,button:"Hubungi Anz"},
+sewa:{title:"Sewa bot whatsapp fitur premium",content:`Terbaik yg pernah ada,dengan harga
+Yg murah dan terjangkau.
+
+Price 1bulan 10k,dan seterusnya.
+
+Hubungi di whatsapp Anz`,button:"Chat Anz"},
+flm:{title:"FLM Remix",content:`Ada beberapa varian flm remix enakeun kece dengan harga terjangkau juga dan bisa di nego juga.
+
+- flm style daff fx
+- flm style enaff, v1, v2, v3
+- flm bootleg, v1, v2
+- flm style enakeunn
+- flm melody sad instrumen
+
+Untuk flm bisa bertanya-tanya lagi ke kontak Anz.`,button:"Hubungi Anz"}
+};
+function openModal(type){let d=data[type];modalTitle.textContent=d.title;modalContent.textContent=d.content;modalAction.textContent=d.button+" ↗";modalAction.href=WA;modal.classList.add("show");document.body.style.overflow="hidden"}
+function closeModal(){modal.classList.remove("show");document.body.style.overflow=""}
+document.querySelectorAll(".product-card").forEach(card=>card.addEventListener("click",e=>{if(e.target.closest("a"))return;openModal(card.dataset.modal)}));
+document.getElementById("closeModal").addEventListener("click",closeModal);
+modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+document.querySelectorAll(".faq-q").forEach(q=>q.addEventListener("click",()=>q.parentElement.classList.toggle("open")));
+
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+const topBtn=document.getElementById("topBtn");
+window.addEventListener("scroll",()=>topBtn.classList.toggle("show",scrollY>650),{passive:true});
+topBtn.addEventListener("click",()=>scrollTo({top:0,behavior:"smooth"}));
+
+const yearNow=document.getElementById("yearNow");yearNow.textContent=new Date().getFullYear();
+const counter=document.querySelector("[data-target]");
+let counted=false;
+const countObs=new IntersectionObserver(es=>{if(es[0].isIntersecting&&!counted){counted=true;let n=0,target=+counter.dataset.target;const tick=()=>{n+=Math.ceil(target/35);if(n>=target)n=target;counter.textContent=n+"+";if(n<target)requestAnimationFrame(tick)};tick()}},{threshold:.7});
+countObs.observe(counter);
+
+const quotes=[
+'«"Jangan lupa menikmati perjalanan."»',
+'«"Hal kecil yang konsisten bisa menjadi sesuatu yang besar."»',
+'«"Tetap rendah hati, tetap bergerak."»',
+'«"Besok adalah kesempatan untuk mencoba lagi."»'
+];
+let qi=0;const rq=document.getElementById("rotatingQuote");
+setInterval(()=>{rq.style.opacity="0";setTimeout(()=>{qi=(qi+1)%quotes.length;rq.textContent=quotes[qi];rq.style.opacity="1"},350)},3800);
+</script>
+</body>
+</html>
